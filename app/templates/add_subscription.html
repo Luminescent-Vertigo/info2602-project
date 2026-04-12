@@ -1,0 +1,115 @@
+{% extends "authenticated-base.html" %}
+
+{% block subpage_content %}
+
+<div class="container py-4">
+
+    <div class="card p-4 shadow-sm border-0">
+
+        <h4 class="mb-4 fw-semibold">Add Subscription</h4>
+
+        <form method="POST" action="/subscriptions/add" id="addSubscriptionForm">
+
+            <!-- Name -->
+            <div class="mb-3">
+                <label class="form-label">Name:</label>
+                <input name="name" id="nameInput" class="form-control" required>
+            </div>
+
+            <!-- Cost -->
+            <div class="mb-3">
+                <label class="form-label">Cost:</label>
+                <input name="cost" id="costInput" type="number" step="0.01"
+                       class="form-control" required>
+            </div>
+
+            <!-- Billing Cycle -->
+            <div class="mb-3">
+                <label class="form-label">Billing Cycle:</label>
+                <select name="billing_cycle" id="cycleSelect" class="form-select" required>
+                    <option value="" selected disabled>Select billing cycle</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                </select>
+            </div>
+
+            <!-- Next Payment Date -->
+            <div class="mb-3">
+                <label class="form-label">Next Payment Date:</label>
+                <input name="next_payment_date" type="date" class="form-control" required>
+            </div>
+
+            <!-- Monthly Equivalent (AUTO) -->
+            <div class="mb-3">
+                <label class="form-label">Monthly Equivalent:</label>
+                <input id="monthlyEquivalent" class="form-control bg-light" readonly>
+            </div>
+
+            <!-- Status (AUTO) -->
+            <div class="mb-3">
+                <label class="form-label">Status:</label>
+                <input id="statusDisplay" class="form-control bg-light" readonly>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex gap-2">
+                <button class="btn btn-success rounded-pill px-4">Add</button>
+                <a href="/subscriptions" class="btn btn-danger rounded-pill px-4">Cancel</a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+function calculateValues() {
+    const cost = parseFloat(document.getElementById("costInput").value) || 0;
+    const cycle = document.getElementById("cycleSelect").value;
+    const dateInput = document.querySelector('input[name="next_payment_date"]').value;
+
+    // --------------------
+    // Monthly Equivalent
+    // --------------------
+    let monthly = 0;
+
+    if (cycle === "monthly") {
+        monthly = cost;
+    } else if (cycle === "yearly") {
+        monthly = cost / 12;
+    }
+
+    document.getElementById("monthlyEquivalent").value =
+        monthly ? monthly.toFixed(2) : "";
+
+    // --------------------
+    // Status
+    // --------------------
+    if (!dateInput) return;
+
+    const today = new Date();
+    const paymentDate = new Date(dateInput);
+
+    const diffDays = (paymentDate - today) / (1000 * 60 * 60 * 24);
+
+    let status = "active";
+
+    if (diffDays < 0) {
+        status = "overdue";
+    } else if (diffDays <= 7) {
+        status = "due";
+    }
+
+    document.getElementById("statusDisplay").value = status;
+}
+
+// EVENTS
+document.getElementById("costInput").addEventListener("input", calculateValues);
+document.getElementById("cycleSelect").addEventListener("change", calculateValues);
+document.querySelector('input[name="next_payment_date"]')
+    .addEventListener("change", calculateValues);
+</script>
+
+{% endblock %}

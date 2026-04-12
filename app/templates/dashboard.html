@@ -1,0 +1,112 @@
+{% extends "authenticated-base.html" %}
+
+{% block external_js %}
+<script src="{{ url_for('static', path='js/dashboard.js')}}"></script>
+{% endblock %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block subpage_content %}
+
+<div class="container py-4">
+
+    <!-- ===== SUMMARY CARDS ===== -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm">
+                <small>Total Income</small>
+                <h4 id="totalIncome" class="text-success">$0</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm">
+                <small>Total Expenses</small>
+                <h4 id="totalExpenses" class="text-danger">$0</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm">
+                <small>Remaining Balance</small>
+                <h4 id="remainingBalance">$0</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm">
+                <small>Monthly Burn Rate</small>
+                <h4 id="burnRate" class="text-warning">$0</h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CHARTS + ALERTS ===== -->
+    <div class="row mb-4 align-items-stretch">
+
+        <!-- PIE CHART -->
+        <div class="col-md-5 d-flex">
+            <div class="card p-3 shadow-sm w-100">
+                <h6>Expenses by Category</h6>
+                <div id="expensePie" style="height: 320px;"></div>
+            </div>
+        </div>
+
+        <!-- BAR CHART -->
+        <div class="col-md-5 d-flex">
+            <div class="card p-3 shadow-sm w-100">
+                <h6>Income vs Expenses</h6>
+                <div id="monthlyBar" style="height: 320px;"></div>
+            </div>
+        </div>
+
+        <!-- ALERTS -->
+        <div class="col-md-2 d-flex">
+            <div class="card p-3 shadow-sm w-100">
+                <h6>Alerts</h6>
+                <div id="alertsContainer">
+                    <p class="text-muted">Loading alerts...</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== INSIGHTS + BUTTONS ===== -->
+    <div class="row align-items-start">
+
+        <!-- INSIGHTS -->
+        <div class="col-md-10 d-flex">
+            <div class="card p-3 shadow-sm w-100" style="min-height: 200px;">
+                <h6>Insights</h6>
+                <div id="insightsContainer">
+                    <p class="text-muted">Loading insights...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- BUTTONS (ALIGNED WITH ALERT COLUMN AND INSIGHTS ROW) -->
+        <div class="col-md-2 d-flex align-items-stretch">
+
+            <div class="d-flex flex-column w-100 gap-4 mt-5">
+
+                <a href="/income" class="btn btn-success rounded-pill px-4 btn-center-icon w-100">
+                    <span class="material-symbols-outlined icon-bold">add</span>
+                    Add Income
+                </a>
+
+                <a href="/expenses" class="btn btn-danger rounded-pill px-4 btn-center-icon w-100">
+                    <span class="material-symbols-outlined icon-bold">add</span>
+                    Add Expenses
+                </a>
+
+            </div>
+
+        </div>
+    
+
+    </div>
+
+</div>
+
+{% endblock %}

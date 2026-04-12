@@ -1,0 +1,160 @@
+{% extends "authenticated-base.html" %}
+
+{% block external_js %}
+<script src="{{ url_for('static', path='js/analytics.js')}}"></script>
+{% endblock %}
+
+{% block page_title %}Reports & Analytics{% endblock %}
+
+{% block subpage_content %}
+
+<div class="container py-4">
+
+    <!-- ================= FILTERS ================= -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card p-4 shadow-sm">
+
+                <h5 class="text-center mb-3">Filters</h5>
+
+                <div class="row justify-content-center g-3">
+
+                    <div class="col-md-3">
+                        <select id="monthFilter" class="form-select rounded-pill">
+                            <option value="">All Months</option>
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <input type="date" id="startDate" class="form-control rounded-pill">
+                    </div>
+
+                    <div class="col-md-3">
+                        <input type="date" id="endDate" class="form-control rounded-pill">
+                    </div>
+
+                </div>
+
+                <div class="text-center mt-3">
+                    <button id="applyFiltersBtn" onclick="loadAnalytics()" class="btn btn-primary rounded-pill px-4 center-icon">
+                        Apply Filters
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= SUMMARY ================= -->
+    <div class="row mb-4 text-center">
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm">
+                <small>Total Income</small>
+                <h4 id="totalIncome" class="text-success">$0</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm">
+                <small>Total Expenses</small>
+                <h4 id="totalExpenses" class="text-danger">$0</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm">
+                <small>Net Savings </small>
+                <h4 id="netBalance" class="text-primary">$0</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm">
+                <small>Subscriptions</small>
+                <h4 id="subscriptions" class="text-warning">$0</h4>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ================= BURN RATE ================= -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card p-4 shadow-sm text-center">
+                <h5>Burn Rate</h5>
+                <p id="burnRateText" class="mb-0 text-muted">
+                    $0/day OR 0% of income used
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= LINE CHART ================= -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card p-4 shadow-sm">
+                <h6 class="text-center mb-3">Income vs Expenses (Over Time)</h6>
+                <div id="lineChart" style="height: 320px;"></div>
+                <small class="text-muted text-center d-block mt-2">
+                    Based on selected date range
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PIE ================= -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card p-4 shadow-sm">
+                <h6 class="text-center mb-3">Spending by Category</h6>
+                <div id="categoryPie" style="height: 320px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= WEEKLY ================= -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card p-4 shadow-sm">
+                <h6 class="text-center mb-3">Weekly Spending Trend</h6>
+                <div id="weeklyChart" style="height: 320px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= BAR ================= -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card p-4 shadow-sm">
+                <h6 class="text-center mb-3">Monthly Comparison</h6>
+                <div id="monthlyChart" style="height: 320px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= INSIGHTS ================= -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card p-4 shadow-sm" style="min-height: 260px;">
+                <h5 class="mb-3">Insights</h5>
+                <div id="insightsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,341 @@
+/* =========================
+   LIGHT MODE (DEFAULT)
+========================= */
+:root {
+  --primary: #1a2265;
+  --primary-hover: #141a4d;
+  --secondary: #7c86e4;
+  --accent: #1f30c7;
+
+  --bg: #f4f4fb;
+  --card: #ffffff;
+  --sidebar: #1b263b;
+  --border: #e6e8f5;
+
+  --text: #0a0b1a;
+  --text-secondary: #4b4f66;
+  --text-muted: #a3a8c2;
+
+/*   --success: #2dd4bf;
+  --warning: #fbbf24;
+  --danger: #fb7185;
+  --info: #60a5fa; */
+  --success: #22c55e;   /* cleaner green (income / positive) */
+  --warning: #f59e0b;   /* warmer amber (less harsh) */
+  --danger:  #ef4444;   /* stable red (clean alert) */
+  --info:    #3b82f6;   /* calm blue (edit / info) */
+
+  --chart-bg: transparent;
+  --chart-text: var(--text);
+  --chart-grid: var(--border);
+  --chart-legend: var(--text);
+}
+
+/* =========================
+   DARK MODE
+========================= */
+html[data-theme="dark"] {
+  --bg: #0a0b1a;
+  --card: #12142a;
+  --sidebar: #070812;
+  --border: #1f2340;
+
+  --text: #f4f4fb;
+  --text-secondary: #b3b7d6;
+  --text-muted: #5a5f80;
+
+  --success: #22c55e;
+  --warning: #fbbf22;
+  --danger:  #ef4444;
+  --info:    #60a5fa;
+
+  --chart-bg: transparent;
+  --chart-text: #f4f4fb;
+  --chart-grid: #1f2340;
+  --chart-legend: #b3b7d6;
+}
+
+/* =========================
+   GLOBAL FIXES (IMPORTANT)
+========================= */
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* CARDS */
+.card {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+/* NAVBAR */
+.navbar {
+  background: var(--card) !important;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+
+/* SIDEBAR */
+#sidebar {
+  background: var(--sidebar);
+  color: var(--text);
+}
+
+/* ALERT FIX (THIS WAS YOUR ISSUE) */
+.alert {
+  background: var(--card) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border);
+}
+
+.alert-warning,
+.alert-success,
+.alert-danger,
+.alert-info {
+  background: var(--card) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+/* TABLES */
+.table {
+  color: var(--text);
+  background: var(--card);
+  border-color: var(--border);
+}
+
+.table th,
+.table td {
+  background: var(--card);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+html[data-theme="dark"] .table-striped tbody tr:nth-of-type(odd) {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.table-hover tbody tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* INPUTS / FILTERS / DATE PICKERS */
+input, select, textarea {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 0.2rem rgba(124, 134, 228, 0.25);
+}
+
+.form-control,
+.form-select {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.dropdown-menu {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.dropdown-item {
+  color: var(--text);
+}
+
+.dropdown-item:hover {
+  background: var(--primary-hover);
+  color: white;
+}
+
+.pagination .page-link {
+  background: var(--card);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.pagination .page-item.active .page-link {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+/* =========================
+   MODALS THEME FIX
+========================= */
+
+.modal-content {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.modal-header,
+.modal-footer {
+  border-color: var(--border);
+}
+
+/* =========================
+   BUDGET FIELD BOX (THEME FIX)
+========================= */
+
+.budget-field-box {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+
+    background: var(--card);
+    color: var(--text);
+
+    transition: 0.2s ease;
+}
+
+/* label above fields */
+.budget-field-box small {
+    color: var(--text-secondary);
+}
+
+/* optional hover polish */
+.budget-field-box:hover {
+    border-color: var(--secondary);
+}
+
+/* optional hover effect */
+.budget-field-box:hover {
+    border-color: var(--secondary);
+}
+
+/* =========================
+   BUTTON SYSTEM (CLEAN)
+========================= */
+
+/* Base */
+.btn {
+  border-radius: 999px; /* pill */
+  font-weight: 500;
+  transition: all 0.2s ease;
+  letter-spacing: 0.2px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Remove Bootstrap glow */
+.btn:focus {
+  box-shadow: none;
+}
+
+
+/* =========================
+   DANGER (Delete)
+========================= */
+.btn-danger {
+  background-color: var(--danger);
+  border: 1px solid var(--danger);
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  filter: brightness(0.9);
+}
+
+/* =========================
+   PRIMARY (Edit)
+========================= */
+.btn-primary {
+  background-color: var(--info);
+  border: 1px solid var(--info);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  filter: brightness(0.9);
+}
+
+/* =========================
+   ICON FIX
+========================= */
+.btn .material-symbols-outlined {
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.icon-bold {
+  font-variation-settings: 'FILL' 1;
+}
+
+
+
+.btn-center-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* Fix icon alignment inside flex */
+.btn-center-icon .material-symbols-outlined {
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  line-height: 1.25;
+  transform: translateY(0.5px); /* small optical correction */
+}
+
+
+.btn .material-symbols-outlined {
+  font-size: 24px;
+}
+
+
+small.text-muted {
+    color: var(--text-secondary) !important;
+}
+
+option {
+  background: var(--card);
+  color: var(--text);
+}
+
+/* FORCE ALL SUCCESS BUTTONS TO MATCH */
+.btn-success {
+  background-color: var(--success) !important;
+  border: 1px solid var(--success) !important;
+  color: #ffffff !important;
+}
+
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  color: #ffffff !important;
+}

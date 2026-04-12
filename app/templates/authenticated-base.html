@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+
+{% block internal_css %}
+
+<style>
+    body {
+        overflow-x: hidden;
+        background-color: var(--bg);
+        color: var(--text);
+    }
+
+    #wrapper {
+        display: flex;
+    }
+
+    #sidebar {
+        min-width: 250px;
+        max-width: 250px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        transition: all 0.3s;
+        background: #1b263b;
+        background: var(--sidebar);
+        color: var(--text);
+    }
+
+    #sidebar.collapsed {
+        margin-left: -250px;
+    }
+
+    #sidebar .nav-link {
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    #sidebar .nav-link:hover,
+    #sidebar .nav-link.active {
+        color: #fff;
+        background-color: var(--primary-hover);
+        border-radius: 0.5rem;
+    }
+
+    #content {
+        width: 100%;
+        padding: 1rem;
+        transition: all 0.3s;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--bg);
+    }
+
+    .card {
+        border-radius: 1rem;
+        background-color: var(--card);
+        border: 1px solid var(--border);
+        color: var(--text);
+    }
+
+    .summary-card {
+        border-left: 5px solid #0d6efd;
+    }
+
+    .navbar {
+        background-color: var(--card) !important;
+        border-bottom: 1px solid var(--border);
+    }
+</style>
+
+{% block additional_styles %}
+<style>
+.badge {
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.btn-success {
+  background-color: var(--success) !important;
+  border: 1px solid var(--success) !important;
+  color: #ffffff !important;
+}
+
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  color: #ffffff !important;
+}
+
+.btn-danger {
+    background-color: var(--danger);
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border: none;
+}
+
+body, .card, .navbar, #sidebar {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+</style>
+{% endblock %}
+
+{% endblock %}
+
+
+{% block content %}
+<div id="wrapper">
+
+    <nav id="sidebar" class="p-3 d-flex flex-column vh-100">
+        <h4 class="text-white mb-4 text-center py-4">Arkvion</h4>
+
+        <ul class="nav nav-pills flex-column gap-2 flex-grow-1">
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/dashboard' }}" href="/dashboard">
+                    <span class="material-symbols-outlined me-2">dashboard</span>
+                    Dashboard
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/income' }}" href="/income">
+                    <span class="material-symbols-outlined me-2">paid</span>
+                    Income
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/expenses' }}" href="/expenses">
+                    <span class="material-symbols-outlined me-2">receipt_long</span>
+                    Expenses
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/subscriptions' }}" href="/subscriptions">
+                    <span class="material-symbols-outlined me-2">subscriptions</span>
+                    Subscriptions
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/budgets' }}" href="/budgets">
+                    <span class="material-symbols-outlined me-2">wallet</span>
+                    Budgets
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/analytics' }}" href="/analytics">
+                    <span class="material-symbols-outlined me-2">report</span>
+                    Reports & Analytics
+                </a>
+            </li>
+            
+            
+            <li class="nav-item mt-auto">
+                <a class="nav-link d-flex align-items-center text-danger" href="/logout">
+                    <span class="material-symbols-outlined me-2">logout</span>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <!--nav class="navbar navbar-expand-lg bg-white mb-4 px-3 rounded-3 shadow-sm"-->
+        <nav class="navbar navbar-expand-lg mb-4 px-3 rounded-3 shadow-sm">
+            <button class="btn btn-outline-secondary" id="menu-toggle">
+                <span class="material-symbols-outlined md-dark">menu</span>
+            </button>
+
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <span class="fw-semibold"><h3>{% block page_title %} {% endblock %}</h3></span>
+            </div>
+
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <span class="fw-semibold">Welcome, {{user.username}}</span>
+                <div class="form-check form-switch">
+                    <input 
+                        class="form-check-input" 
+                        type="checkbox" 
+                        id="themeSwitch"
+                    >
+                </div>
+            </div>
+            
+        </nav>
+        
+        <div class="row">
+            <div class="col-12">
+                {% for message in get_flashed_messages(request) %}
+                    <div class="alert alert-{{ message.type }}" role="alert">{{ message.message }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+        {% block subpage_content %}{% endblock %}
+
+    </div>
+
+
+</div>
+
+
+<script>
+    document.getElementById("menu-toggle").addEventListener("click", function () {
+        document.getElementById("sidebar").classList.toggle("collapsed");
+    });
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Highcharts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.8/highcharts.js"></script>
+
+
+{% block subpage_scripts %}{% endblock %}
+
+{% endblock %}

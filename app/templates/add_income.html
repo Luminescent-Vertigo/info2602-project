@@ -1,0 +1,114 @@
+{% extends "authenticated-base.html" %}
+
+{% block subpage_content %}
+
+<div class="container py-4">
+
+    <div class="card p-4 shadow-sm border-0">
+
+        <h4 class="mb-4 fw-semibold">Add Income</h4>
+
+        <form method="POST" action="/income/add" id="addIncomeForm">
+
+            <!-- Name -->
+            <div class="mb-3">
+                <label class="form-label">Name:</label>
+                <input name="name" class="form-control" placeholder="Enter income name" required>
+            </div>
+
+            <!-- Amount -->
+            <div class="mb-3">
+                <label class="form-label">Amount:</label>
+                <input name="amount" type="number" step="0.01" class="form-control" placeholder="0.00" required>
+            </div>
+
+            <!-- Category -->
+            <div class="mb-2">
+                <label class="form-label">Category:</label>
+                <select name="category" id="categorySelect" class="form-select" onchange="toggleOtherField()">
+
+                    <option disabled {% if not form_data or not form_data.category %}selected{% endif %}>
+                        Select a category
+                    </option>
+
+                    <option value="Salary"
+                        {% if form_data and form_data.category == "Salary" %}selected{% endif %}>
+                        Salary
+                    </option>
+
+                    <option value="Freelance"
+                        {% if form_data and form_data.category == "Freelance" %}selected{% endif %}>
+                        Freelance
+                    </option>
+
+                    <option value="Business"
+                        {% if form_data and form_data.category == "Business" %}selected{% endif %}>
+                        Business
+                    </option>
+
+                    <option value="Other"
+                        {% if form_data and form_data.category == "Other" %}selected{% endif %}>
+                        Other
+                    </option>
+
+                </select>
+            </div>
+
+            <!-- Specify (Hidden by default) -->
+            <div class="mb-3" id="otherCategoryDiv" style="display: none;">
+                <label class="form-label">Specify:</label>
+                <input type="text"
+                    name="custom_category"
+                    id="customCategory"
+                    class="form-control"
+                    placeholder="Enter category"
+                    value="{{ form_data.custom_category if form_data else '' }}">
+            </div>
+
+            <!-- Date -->
+            <div class="mb-3">
+                <label class="form-label">Date:</label>
+                <input name="date" type="date" class="form-control" required>
+            </div>
+
+            <!-- Comment -->
+            <div class="mb-4">
+                <label class="form-label">Comment:</label>
+                <input name="comment" class="form-control" placeholder="Optional note...">
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex gap-2">
+                <button class="btn btn-success rounded-pill px-4">Add</button>
+                <a href="/income" class="btn btn-danger rounded-pill px-4">Cancel</a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- Script -->
+<script>
+function toggleOtherField() {
+    const categorySelect = document.getElementById("categorySelect");
+    const otherDiv = document.getElementById("otherCategoryDiv");
+
+    if (!categorySelect || !otherDiv) return;
+
+    otherDiv.style.display = (categorySelect.value === "Other") ? "block" : "none";
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const categorySelect = document.getElementById("categorySelect");
+
+    if (categorySelect) {
+        categorySelect.addEventListener("change", toggleOtherField);
+    }
+
+    toggleOtherField();
+});
+</script>
+
+{% endblock %}
