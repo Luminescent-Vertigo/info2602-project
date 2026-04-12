@@ -201,7 +201,9 @@ body, .card, .navbar, #sidebar {
         </div>
 
 
-        {% block subpage_content %}{% endblock %}
+        {% block subpage_content %}                 
+        <p class="text-muted mb-0">{% block page_subtitle %} <!-- default fallback -->{% endblock %}</p>
+        {% endblock %}
 
     </div>
 

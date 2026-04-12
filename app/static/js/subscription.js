@@ -226,7 +226,13 @@ async function markPaid(id) {
 
         if (!res.ok) throw new Error("Failed to mark paid");
 
-        showToast("Payment recorded");
+        showToast(
+            "success",
+            "Payment Successful",
+            "Subscription marked as paid"
+        );
+
+        //showToast("Payment recorded");
         // reload fresh data from backend
         await loadSubscriptions();
 
@@ -318,7 +324,7 @@ function getDisplayStatus(sub) {
     return { label: "Active", color: "primary" };
 }
 
-function showToast(message, type = "success") {
+/* function showToast(message, type = "success") {
     const toast = document.createElement("div");
     toast.className = `alert alert-${type} position-fixed top-0 end-0 m-3`;
     toast.style.zIndex = 9999;
@@ -327,7 +333,7 @@ function showToast(message, type = "success") {
     document.body.appendChild(toast);
 
     setTimeout(() => toast.remove(), 3000);
-}
+} */
 
 
 // ================= EDIT MODAL =================

@@ -13,7 +13,7 @@
   --border: #e6e8f5;
 
   --text: #0a0b1a;
-  --text-secondary: #4b4f66;
+  --text-secondary: #c0c6dd; /* #4b4f66;*/
   --text-muted: #a3a8c2;
 
 /*   --success: #2dd4bf;
@@ -84,20 +84,44 @@ body {
   color: var(--text);
 }
 
-/* ALERT FIX (THIS WAS YOUR ISSUE) */
+/* =========================
+   BOOTSTRAP ALERT FIX (WORKING)
+========================= */
+
+/* Base alert (neutral styling) */
 .alert {
-  background: var(--card) !important;
-  color: var(--text) !important;
   border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--text);
 }
 
-.alert-warning,
-.alert-success,
-.alert-danger,
-.alert-info {
-  background: var(--card) !important;
+/* SUCCESS */
+.alert-success {
+  background-color: rgba(34, 197, 94, 0.15) !important;
+  border-color: var(--success) !important;
   color: var(--text) !important;
-  border-color: var(--border) !important;
+}
+
+/* DANGER */
+.alert-danger {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+  border-color: var(--danger) !important;
+  color: var(--text) !important;
+}
+
+/* WARNING */
+.alert-warning {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+  border-color: var(--warning) !important;
+  color: var(--text) !important;
+}
+
+/* INFO */
+.alert-info {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+  border-color: var(--info) !important;
+  color: var(--text) !important;
 }
 
 .text-muted {
@@ -338,4 +362,63 @@ option {
   background-color: #16a34a !important;
   border-color: #16a34a !important;
   color: #ffffff !important;
+}
+
+/* =========================
+   BOOTSTRAP TOAST FIX (FINAL WORKING)
+========================= */
+
+/* Base toast container */
+.toast {
+  border: 1px solid var(--border);
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+  background-color: var(--card);
+  color: var(--text);
+}
+
+/* HEADER ALWAYS CLEAN */
+.toast-header {
+  background-color: var(--card);
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+
+/* BODY ALWAYS CLEAN */
+.toast-body {
+  background-color: var(--card);
+  color: var(--text);
+}
+
+/* =========================
+   COLORED TOAST OVERRIDES
+========================= */
+
+.toast.text-bg-success {
+  background-color: var(--success) !important;
+  color: #fff !important;
+}
+
+.toast.text-bg-danger {
+  background-color: var(--danger) !important;
+  color: #fff !important;
+}
+
+.toast.text-bg-warning {
+  background-color: var(--warning) !important;
+  color: #fff !important;
+}
+
+.toast.text-bg-info {
+  background-color: var(--info) !important;
+  color: #fff !important;
+}
+
+/* FIX HEADER WHEN COLORED */
+.toast.text-bg-success .toast-header,
+.toast.text-bg-danger .toast-header,
+.toast.text-bg-warning .toast-header,
+.toast.text-bg-info .toast-header {
+  background-color: transparent !important;
+  color: #fff !important;
+  border-bottom: none !important;
 }
