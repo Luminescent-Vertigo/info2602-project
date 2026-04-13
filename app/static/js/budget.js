@@ -143,7 +143,11 @@ function setDefaultDates() {
 }
 
 function formatDate(dateStr) {
-    const d = new Date(dateStr);
+    if (!dateStr) return "";
+
+    const [year, month, day] = dateStr.split("-");
+    const d = new Date(year, month - 1, day);
+
     return d.toLocaleDateString(undefined, {
         month: 'short',
         day: 'numeric',
@@ -152,10 +156,17 @@ function formatDate(dateStr) {
 }
 
 function formatRange(start, end) {
-    const s = new Date(start);
-    const e = new Date(end);
+    if (!start || !end) return "";
 
-    const sameMonth = s.getMonth() === e.getMonth() && s.getFullYear() === e.getFullYear();
+    const [sy, sm, sd] = start.split("-");
+    const [ey, em, ed] = end.split("-");
+
+    const s = new Date(sy, sm - 1, sd);
+    const e = new Date(ey, em - 1, ed);
+
+    const sameMonth =
+        s.getMonth() === e.getMonth() &&
+        s.getFullYear() === e.getFullYear();
 
     if (sameMonth) {
         return `${s.toLocaleDateString(undefined, { month: 'short' })} ${s.getDate()} – ${e.getDate()}, ${s.getFullYear()}`;

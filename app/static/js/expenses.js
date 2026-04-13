@@ -9,7 +9,10 @@ let rowsPerPage = 8; // make it let, not const
 // ---------------- Date Formatting ----------------
 function formatDateForDisplay(dateStr) {
     if (!dateStr) return "";
-    const d = new Date(dateStr);
+
+    const [year, month, day] = dateStr.split("-");
+    const d = new Date(year, month - 1, day);
+
     return d.toLocaleDateString(undefined, {
         month: 'short',
         day: 'numeric',
@@ -20,10 +23,14 @@ function formatDateForDisplay(dateStr) {
 // Format date for <input type="date"> (yyyy-mm-dd)
 function formatDateForInput(dateStr) {
     if (!dateStr) return "";
-    const d = new Date(dateStr);
+
+    const [year, month, day] = dateStr.split("-");
+    const d = new Date(year, month - 1, day);
+
     const yyyy = d.getFullYear();
     const mm = String(d.getMonth() + 1).padStart(2, '0');
     const dd = String(d.getDate()).padStart(2, '0');
+
     return `${yyyy}-${mm}-${dd}`;
 }
 
