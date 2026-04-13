@@ -1,0 +1,133 @@
+{% extends "authenticated-base.html" %}
+
+{% block external_js %}
+<script src="{{ url_for('static', path='js/ai.js')}}"></script>
+{% endblock %}
+
+{% block page_title %}AI Assistant{% endblock %}
+
+{% block subpage_content %}
+{% block page_subtitle %} Intelligent financial guidance powered by your income, spending, and budgeting data. {% endblock %}
+
+
+<div class="container-fluid py-3">
+
+    <!-- ===== TOP SUMMARY CARDS ===== -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-2">
+            <div class="card p-3 shadow-sm h-100">
+                <small>Income</small>
+                <h4 id="aiIncome" class="text-success">$0</h4>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card p-3 shadow-sm h-100">
+                <small>Expenses</small>
+                <h4 id="aiExpense" class="text-danger">$0</h4>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card p-3 shadow-sm h-100">
+                <small>Balance</small>
+                <h4 id="aiBalance">$0</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm h-100">
+                <small>Alerts</small>
+                <div id="aiAlerts" class="mt-2 text-muted">
+                    No alerts
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm h-100">
+                <small>Subscription Impact</small>
+                <div id="aiSubs" class="mt-2 text-warning">
+                    0% of income
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== MAIN SECTION ===== -->
+    <div class="row g-3">
+
+        <!-- LEFT: PROMPTS -->
+        <div class="col-md-4">
+            <div class="card p-3 shadow-sm h-100">
+
+                <h6 class="mb-3">Suggested Prompts</h6>
+                <br>
+
+                <div class="d-grid gap-4">
+
+                    <button class="btn btn-outline-primary prompt-btn text-start">
+                        💡 How can I save money?
+                    </button>
+
+                    <button class="btn btn-outline-primary prompt-btn text-start">
+                        📉 Why am I overspending?
+                    </button>
+
+                    <button class="btn btn-outline-primary prompt-btn text-start">
+                        📊 Summarize my finances
+                    </button>
+
+                    <button class="btn btn-outline-primary prompt-btn text-start">
+                        📋 Show budget status
+                    </button>
+
+                    <button class="btn btn-outline-primary prompt-btn text-start">
+                        📅 Compare months
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- RIGHT: CHAT -->
+        <div class="col-md-8">
+            <div class="card p-3 shadow-sm d-flex flex-column" style="height: 520px;">
+
+                <h6 class="mb-3">Financial Assistant</h6>
+
+                <!-- CHAT BOX -->
+                <div id="chatBox"
+                     class="flex-grow-1 overflow-auto mb-3 p-2"
+                     style="background: var(--bg); border-radius: 10px;">
+
+                    <div class="text-muted small">
+                        👋 Ask me anything about your finances...
+                    </div>
+
+                </div>
+
+                <!-- INPUT -->
+                <div class="d-flex gap-2">
+                    <input
+                        type="text"
+                        id="chatInput"
+                        class="form-control"
+                        placeholder="Ask a question..."
+                    >
+                    <button id="sendBtn" class="btn btn-primary px-4">
+                        Send
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

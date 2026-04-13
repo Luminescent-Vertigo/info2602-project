@@ -28,6 +28,11 @@ dependencies = [
     "tabulate",
     "typer",
     "python-dateutil",
+    "openai",
+    "requests",
+    "python-dotenv",
+    "langchain",
+    "langchain-openai",
     "uvicorn[standard]",
 ]
 [project.optional-dependencies]
