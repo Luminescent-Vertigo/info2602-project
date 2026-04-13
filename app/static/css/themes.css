@@ -427,3 +427,8 @@ option {
   color: #fff !important;
   border-bottom: none !important;
 }
+
+.text-medium {
+    font-size: 1rem;
+    color: var(--text-muted);
+}
