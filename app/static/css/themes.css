@@ -180,6 +180,11 @@ textarea:focus {
   color: var(--text-muted);
 }
 
+.form-side {     
+	background: var(--card);
+    color: var(--text);
+}
+
 .dropdown-menu {
   background: var(--card);
   color: var(--text);
