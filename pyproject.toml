@@ -34,6 +34,9 @@ dependencies = [
     "langchain",
     "langchain-openai",
     "uvicorn[standard]",
+    "openai",
+    "chromadb",
+    "schemas",
 ]
 [project.optional-dependencies]
 dev = [
