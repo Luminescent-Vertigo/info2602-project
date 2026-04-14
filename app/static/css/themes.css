@@ -432,3 +432,65 @@ option {
     font-size: 1rem;
     color: var(--text-muted);
 }
+
+#aiToggleBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    z-index: 99999;
+}
+
+#aiChatPopup {
+    position: fixed;
+    bottom: 90px;   /* sits above button */
+    right: 20px;    /* anchors to right side */
+
+    width: 380px;
+    height: 520px;
+
+    display: none;
+    z-index: 99999;
+
+    /* IMPORTANT: prevents full width behavior */
+    left: auto;
+    top: auto;
+}
+
+#aiChatPopup .card {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+#chatBox {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.chat-bubble {
+    max-width: 75%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 15px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+/* user bubble (right side) */
+.user-bubble {
+    background: var(--primary);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+/* bot bubble (left side) */
+.bot-bubble {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 4px;
+}
