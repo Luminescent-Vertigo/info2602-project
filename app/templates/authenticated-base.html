@@ -113,7 +113,14 @@ body, .card, .navbar, #sidebar {
 <div id="wrapper">
 
     <nav id="sidebar" class="p-3 d-flex flex-column vh-100">
-        <h4 class="text-white mb-4 text-center py-4">Arkvion</h4>
+        <!--h4 class="text-white mb-4 text-center py-4">Arkvion</h4-->
+        <div class="d-flex align-items-center justify-content-center gap-2 mb-4 py-4">
+            <img src="{{ url_for('static', path='img/logo.svg') }}" 
+                alt="Arkvion Logo" 
+                style="width: 32px; height: 32px;">
+
+            <h3 class="text-white mb-0 fw-bold" style="letter-spacing: 0.5px;">Arkvion</h3>
+        </div>
 
         <ul class="nav nav-pills flex-column gap-2 flex-grow-1">
             <li class="nav-item">
@@ -158,12 +165,6 @@ body, .card, .navbar, #sidebar {
                 </a>
             </li>
             
-            <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/ai' }}" href="/ai">
-                    <span class="material-symbols-outlined me-2">smart_toy</span>
-                    AI Assistant
-                </a>
-            </li>
             
             <li class="nav-item mt-auto">
                 <a class="nav-link d-flex align-items-center text-danger" href="/logout">
@@ -216,6 +217,37 @@ body, .card, .navbar, #sidebar {
 
 </div>
 
+<script src="{{ url_for('static', path='js/chat-widget.js') }}"></script>
+
+<!-- FLOAT BUTTON -->
+<button id="aiToggleBtn" class="btn btn-primary shadow">
+    💬
+</button>
+
+<!-- CHAT POPUP -->
+<div id="aiChatPopup">
+
+    <div class="card d-flex flex-column h-100">
+
+        <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+            <h6 class="mb-0">AI Assistant</h6>
+            <button id="closeChat" class="btn btn-sm btn-light">✕</button>
+        </div>
+
+        <div id="chatBox" class="flex-grow-1 overflow-auto p-2">
+            <div class="text-muted small">
+                👋 Ask me anything about your finances...
+            </div>
+        </div>
+
+        <div class="d-flex gap-2 p-2 border-top">
+            <input id="chatInput" class="form-control" placeholder="Ask a question...">
+            <button id="sendBtn" class="btn btn-primary">Send</button>
+        </div>
+
+    </div>
+
+</div>
 
 <script>
     document.getElementById("menu-toggle").addEventListener("click", function () {
