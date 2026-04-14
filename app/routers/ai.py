@@ -8,6 +8,9 @@ from app.dependencies.income import get_income_service
 from app.dependencies.expense import get_expense_service
 from app.dependencies.subscription import get_subscription_service
 
+import chromadb
+from openai import OpenAI
+
 from . import router, templates
 
 
@@ -25,7 +28,6 @@ async def ai_page(request: Request, user: AuthDep):
         }
     )
 
-
 # =========================
 # AI CHAT (LANGCHAIN)
 # =========================
@@ -39,7 +41,7 @@ async def chat(
 ):
 
     ai_response = await generate_ai_response(
-        user_id=user.id,
+        user=user, # Pass the entire user object here
         message=req.message,
         income_service=income_service,
         expense_service=expense_service,

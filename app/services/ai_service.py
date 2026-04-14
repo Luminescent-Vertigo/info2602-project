@@ -1,163 +1,116 @@
-from langchain_core.runnables import RunnableLambda
-import httpx
+import chromadb
+from openai import AsyncOpenAI
 from app.config import get_settings
 
 settings = get_settings()
 
+# ==========================================
+# 1. GLOBAL CLIENT SETUP
+# ==========================================
+chroma_client = chromadb.CloudClient(
+    api_key=settings.chromadb_api_key,
+    tenant=settings.chromadb_tenant,
+    database=settings.chromadb_database
+)
+collection = chroma_client.get_collection(name="personal-finance-help")
 
-# =========================
-# CALL CUSTOM AI API
-# =========================
-async def call_ai_api(input_data):
-    url = settings.ai_base_url.rstrip("/") + "/api/v1/chat/completions"
-
-    payload = {
-        "model": settings.model_name,
-        "messages": input_data["messages"],
-        "temperature": 0
-    }
-
-    headers = {
-        "Authorization": f"Bearer {settings.ai_api_key}",
-        "Content-Type": "application/json"
-    }
-
-    try:
-        async with httpx.AsyncClient() as client:
-            res = await client.post(url, json=payload, headers=headers)
-
-        print("AI STATUS:", res.status_code)
-        print("AI RESPONSE:", res.text)
-
-        data = res.json()
-
-        return data["choices"][0]["message"]["content"]
-
-    except Exception as e:
-        print("AI ERROR:", str(e))
-        return "AI service is currently unavailable."
-
-
-# =========================
-# LANGCHAIN WRAPPER
-# =========================
-llm = RunnableLambda(call_ai_api)
-
-
-# =========================
-# MAIN FUNCTION
-# =========================
-async def generate_ai_response(
-    user_id: int,
-    message: str,
-    income_service,
-    expense_service,
-    subscription_service
-):
-
-    incomes = income_service.get_user_income(user_id)
-    expenses = expense_service.get_user_expenses(user_id)
-    subscriptions = subscription_service.get_user_subscriptions(user_id)
-
-    total_income = sum(i.amount for i in incomes)
-    total_expenses = sum(e.amount for e in expenses)
-    total_subs = sum(s.monthly_equivalent for s in subscriptions)
-
-    balance = total_income - total_expenses
-
-    context = f"""
-You are a personal finance assistant.
-
-Income: {total_income}
-Expenses: {total_expenses}
-Subscriptions: {total_subs}
-Balance: {balance}
-
-Give short practical advice.
-"""
-
-    result = await llm.ainvoke({
-        "messages": [
-            {"role": "system", "content": context},
-            {"role": "user", "content": message}
-        ]
-    })
-
-    return result
-
-""" from langchain_openai import ChatOpenAI
-from app.config import get_settings
-
-from app.dependencies.income import get_income_service
-from app.dependencies.expense import get_expense_service
-from app.dependencies.subscription import get_subscription_service
-
-settings = get_settings()
-
-print("AI BASE URL:", settings.ai_base_url)
-print("MODEL:", settings.model_name)
-
-from langchain_openai import OpenAI
-from app.config import get_settings
-
-settings = get_settings()
-
-llm = ChatOpenAI(
-    model=settings.model_name,
+ai_client = AsyncOpenAI(
     api_key=settings.ai_api_key,
-    base_url="https://ai-gen.sundaebytestt.com/v1",
-    temperature=0,
+    base_url=settings.ai_base_url
 )
 
-async def generate_ai_response(
-    user_id: int,
-    message: str,
-    income_service,
-    expense_service,
-    subscription_service
-):
+# ==========================================
+# 2. MODULAR AI CALLER (With Error Handling)
+# ==========================================
+async def call_arkvion_ai(system_prompt: str, user_message: str):
+    """
+    Handles the actual communication with the LLM.
+    Separating this allows for better logging and error catching.
+    """
+    try:
+        response = await ai_client.chat.completions.create(
+            model=settings.model_name,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message}
+            ],
+            temperature=0.1 # Low temperature for consistent financial advice
+        )
+        return response.choices[0].message.content
 
+    except Exception as e:
+        # Log the error for debugging
+        print(f"ARKVION AI ERROR: {str(e)}")
+        return "I'm having trouble connecting to my brain right now. Please try again in a moment!"
+
+# ==========================================
+# 3. MAIN GENERATION FUNCTION
+# ==========================================
+async def generate_ai_response(
+    user, 
+    message: str, 
+    income_service, 
+    expense_service, 
+    subscription_service
+) -> str:
+    
+    # --- A. User Identity ---
+    user_id = user.id
+    user_name = getattr(user, 'username', getattr(user, 'first_name', 'Valued User')) 
+    
+    # --- B. Documentation Retrieval (ChromaDB) ---
+    results = collection.query(query_texts=[message], n_results=1)
+    doc_context = ""
+    if results and "documents" in results and results["documents"][0]:
+        doc_context = results["documents"][0][0]
+
+    # --- C. Financial Data Processing ---
+    
     incomes = income_service.get_user_income(user_id)
     expenses = expense_service.get_user_expenses(user_id)
     subscriptions = subscription_service.get_user_subscriptions(user_id)
-
+    
+    
     total_income = sum(i.amount for i in incomes)
     total_expenses = sum(e.amount for e in expenses)
     total_subs = sum(s.monthly_equivalent for s in subscriptions)
-
     balance = total_income - total_expenses
 
+    # --- D. Logic-Based Alerts ---
     alerts = []
-
     if total_expenses > total_income:
-        alerts.append("User is overspending")
+        alerts.append("⚠️ Overspending: Expenses exceed income.")
+    if total_income > 0 and (total_subs / total_income) > 0.2:
+        alerts.append("🚩 High Subscriptions: Consuming >20% of income.")
+    if total_income > 0 and (total_expenses / total_income) > 0.8:
+        alerts.append("💡 High Burn Rate: Spending is over 80% of earnings.")
+    
+    alerts_text = "\n".join(alerts) if alerts else "Financial standing is stable."
 
-    if total_subs > total_income * 0.2:
-        alerts.append("High subscription cost")
+    # --- E. System Prompt Construction ---
+    system_prompt = f"""
+    You are the Arkvion Assistant, a helpful personal finance AI. 
+    
+    USER PROFILE:
+    - Name: {user_name}
+    
+    FINANCIAL DATA:
+    - Total Income: ${total_income:,.2f}
+    - Total Expenses: ${total_expenses:,.2f} (including ${total_subs:,.2f} in subscriptions)
+    - Current Balance: ${balance:,.2f}
+    
+    AUTOMATED ALERTS:
+    {alerts_text}
 
-    if total_income > 0 and total_expenses / total_income > 0.8:
-        alerts.append("Spending is very high")
+    DOCUMENTATION CONTEXT:
+    {doc_context}
 
-    alerts_text = ", ".join(alerts) if alerts else "No major alerts"
+    INSTRUCTIONS:
+    1. Address {user_name} by name occasionally.
+    2. Be concise, practical, and encouraging.
+    3. Use the Documentation Context to answer specific "How-to" questions.
+    4. If Alerts are present, briefly mention them as priorities.
+    """
 
-    context = f"""
-""" You are a personal finance assistant.
-
-    USER FINANCIAL DATA:
-    - Income: {total_income}
-    - Expenses: {total_expenses}
-    - Subscriptions: {total_subs}
-    - Balance: {balance}
-    - Alerts: {alerts_text}
-
-    TASK:
-    - Explain the user's financial situation
-    - Give simple advice
-    - Be concise and practical
-    """"""
-    response = await llm.ainvoke([
-        {"role": "system", "content": context},
-        {"role": "user", "content": message}
-    ])
-
-    return response.content """
+    # --- F. Execute ---
+    return await call_arkvion_ai(system_prompt, message)
