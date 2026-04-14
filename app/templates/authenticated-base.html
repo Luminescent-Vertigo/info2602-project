@@ -113,7 +113,14 @@ body, .card, .navbar, #sidebar {
 <div id="wrapper">
 
     <nav id="sidebar" class="p-3 d-flex flex-column vh-100">
-        <h4 class="text-white mb-4 text-center py-4">Arkvion</h4>
+        <!--h4 class="text-white mb-4 text-center py-4">Arkvion</h4-->
+        <div class="d-flex align-items-center justify-content-center gap-2 mb-4 py-4">
+            <img src="{{ url_for('static', path='img/logo.svg') }}" 
+                alt="Arkvion Logo" 
+                style="width: 32px; height: 32px;">
+
+            <h3 class="text-white mb-0 fw-bold" style="letter-spacing: 0.5px;">Arkvion</h3>
+        </div>
 
         <ul class="nav nav-pills flex-column gap-2 flex-grow-1">
             <li class="nav-item">
