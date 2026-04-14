@@ -22,4 +22,8 @@ class Settings(BaseSettings):
     ai_base_url: str
     model_name: str
     
+    chromadb_api_key: str
+    chromadb_tenant: str
+    chromadb_database: str
+    
     model_config = SettingsConfigDict(env_file=".env")
