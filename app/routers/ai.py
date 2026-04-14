@@ -43,6 +43,7 @@ async def chat(
     ai_response = await generate_ai_response(
         user=user, # Pass the entire user object here
         message=req.message,
+        current_page=req.current_page,
         income_service=income_service,
         expense_service=expense_service,
         subscription_service=subscription_service
