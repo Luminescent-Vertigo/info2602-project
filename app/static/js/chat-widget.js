@@ -23,58 +23,63 @@ document.addEventListener("DOMContentLoaded", () => {
     const sendBtn = document.getElementById("sendBtn");
     const chatBox = document.getElementById("chatBox");
 
-    // ✅ CRITICAL FIX
     if (!input || !sendBtn || !chatBox) {
         console.log("AI chat not on this page → skipping send logic");
         return;
     }
 
-    function appendMessage(text, sender) {
+    function appendMessage(sender, text) {
         const div = document.createElement("div");
-        div.classList.add("mb-2", "d-flex");
+        div.classList.add("mb-3", "p-2"); // Added margin for better spacing between bubbles
 
-        if (sender === "user") {
-            div.classList.add("justify-content-end");
+        if (sender === "AI") {
+            // Use marked.parse to convert Markdown to HTML
+            const formattedContent = marked.parse(text);
             div.innerHTML = `
-                <div class="chat-bubble user-bubble">
-                    ${text}
-                </div>
+                <div class="small text-primary"><strong>${sender}</strong></div>
+                <div class="ai-content mt-1">${formattedContent}</div>
             `;
         } else {
-            div.classList.add("justify-content-start");
             div.innerHTML = `
-                <div class="chat-bubble bot-bubble">
-                    ${text}
-                </div>
+                <div class="small text-secondary"><strong>You</strong></div>
+                <div class="user-content mt-1">${text}</div>
             `;
         }
 
+        const chatBox = document.getElementById("chatBox");
         chatBox.appendChild(div);
         chatBox.scrollTop = chatBox.scrollHeight;
-    }
+}
+
 
     async function sendMessage() {
-        const message = input.value.trim();
-        if (!message) return;
+    const message = input.value.trim();
+    if (!message) return;
 
-        appendMessage(message, "user");
-        input.value = "";
+    // Fixed: (Sender, Text)
+    appendMessage("You", message); 
+    input.value = "";
 
-        try {
-            const res = await fetch("/ai/chat", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message })
-            });
+    try {
+        const res = await fetch("/ai/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                message: message,
+                current_page: window.location.pathname 
+            })
+        });
 
-            const data = await res.json();
-            appendMessage(data.response || "No response", "bot");
+        const data = await res.json();
+        
+        // Fixed: Use "AI" specifically if your function checks for if (sender === "AI")
+        appendMessage("AI", data.response || "No response");
 
-        } catch (err) {
-            console.error(err);
-            appendMessage("Error connecting to AI", "bot");
-        }
+    } catch (err) {
+        console.error(err);
+        appendMessage("AI", "Error connecting to AI");
     }
+}
 
     sendBtn.addEventListener("click", sendMessage);
 

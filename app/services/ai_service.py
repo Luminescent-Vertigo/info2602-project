@@ -49,6 +49,7 @@ async def call_arkvion_ai(system_prompt: str, user_message: str):
 async def generate_ai_response(
     user, 
     message: str, 
+    current_page: str ,
     income_service, 
     expense_service, 
     subscription_service
@@ -88,28 +89,26 @@ async def generate_ai_response(
     alerts_text = "\n".join(alerts) if alerts else "Financial standing is stable."
 
     # --- E. System Prompt Construction ---
-    system_prompt = f"""
-    You are the Arkvion Assistant, a helpful personal finance AI. 
-    
-    USER PROFILE:
-    - Name: {user_name}
-    
-    FINANCIAL DATA:
-    - Total Income: ${total_income:,.2f}
-    - Total Expenses: ${total_expenses:,.2f} (including ${total_subs:,.2f} in subscriptions)
-    - Current Balance: ${balance:,.2f}
-    
-    AUTOMATED ALERTS:
-    {alerts_text}
+    system_prompt = f"""Role: Arkvion Assistant. Tone: Concise, practical, and encouraging.
 
-    DOCUMENTATION CONTEXT:
+    [USER & SYSTEM CONTEXT]
+    Name: {user.username}
+    Current Page: {current_page}
+    Alerts: {alerts_text}
+
+    [FINANCIAL DATA]
+    Current Balance: ${balance:,.2f}
+    Total Income: ${total_income:,.2f}
+    Total Expenses: ${total_expenses:,.2f} (Includes ${total_subs:,.2f} in subscriptions)
+
+    [DOCUMENTATION]
     {doc_context}
 
-    INSTRUCTIONS:
-    1. Address {user_name} by name occasionally.
-    2. Be concise, practical, and encouraging.
-    3. Use the Documentation Context to answer specific "How-to" questions.
-    4. If Alerts are present, briefly mention them as priorities.
+    [INSTRUCTIONS]
+    1. Address the user by name occasionally.
+    2. If Alerts are present, briefly mention them as priorities.
+    3. Use the [DOCUMENTATION] context to answer specific "How-to" questions.
+    4. If the user asks "What is this page?" or "How do I use this?", specifically refer to the documentation for the '{current_page}' section.
     """
 
     # --- F. Execute ---
