@@ -61,13 +61,31 @@ async function sendMessage(message) {
 }
 
 // Append message
+// function appendMessage(sender, text) {
+//     const div = document.createElement("div");
+//     div.classList.add("mb-2");
+
+//     div.innerHTML = `<strong>${sender}:</strong> ${text}`;
+//     chatBox.appendChild(div);
+
+//     chatBox.scrollTop = chatBox.scrollHeight;
+// }
+// Append message
 function appendMessage(sender, text) {
     const div = document.createElement("div");
     div.classList.add("mb-2");
 
-    div.innerHTML = `<strong>${sender}:</strong> ${text}`;
-    chatBox.appendChild(div);
+    // Only parse as Markdown if the sender is the AI
+    if (sender === "AI") {
+        // marked.parse() converts Markdown (**bold**, \n) into HTML (<strong>, <br>)
+        const formattedContent = marked.parse(text);
+        div.innerHTML = `<strong>${sender}:</strong> <div class="ai-content">${formattedContent}</div>`;
+    } else {
+        // For the user, we keep it simple or escape it for security
+        div.innerHTML = `<strong>${sender}:</strong> <span>${text}</span>`;
+    }
 
+    chatBox.appendChild(div);
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 

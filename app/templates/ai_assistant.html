@@ -2,12 +2,14 @@
 
 {% block external_js %}
 <script src="{{ url_for('static', path='js/ai.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 {% endblock %}
 
 {% block page_title %}AI Assistant{% endblock %}
 
 {% block subpage_content %}
-{% block page_subtitle %} Intelligent financial guidance powered by your income, spending, and budgeting data. {% endblock %}
+{% block page_subtitle %} Intelligent financial guidance powered by your income, spending, and budgeting data. {%
+endblock %}
 
 
 <div class="container-fluid py-3">
@@ -100,9 +102,8 @@
                 <h6 class="mb-3">Financial Assistant</h6>
 
                 <!-- CHAT BOX -->
-                <div id="chatBox"
-                     class="flex-grow-1 overflow-auto mb-3 p-2"
-                     style="background: var(--bg); border-radius: 10px;">
+                <div id="chatBox" class="flex-grow-1 overflow-auto mb-3 p-2"
+                    style="background: var(--bg); border-radius: 10px;">
 
                     <div class="text-muted small">
                         👋 Ask me anything about your finances...
@@ -112,12 +113,7 @@
 
                 <!-- INPUT -->
                 <div class="d-flex gap-2">
-                    <input
-                        type="text"
-                        id="chatInput"
-                        class="form-control"
-                        placeholder="Ask a question..."
-                    >
+                    <input type="text" id="chatInput" class="form-control" placeholder="Ask a question...">
                     <button id="sendBtn" class="btn btn-primary px-4">
                         Send
                     </button>
