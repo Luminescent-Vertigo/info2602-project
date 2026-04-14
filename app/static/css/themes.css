@@ -494,3 +494,11 @@ option {
     border: 1px solid var(--border);
     border-bottom-left-radius: 4px;
 }
+
+img {
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+img:hover {
+    opacity: 1;
+}
