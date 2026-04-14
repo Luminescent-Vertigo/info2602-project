@@ -70,53 +70,57 @@
 
 {% block additional_styles %}
 <style>
-.badge {
-    padding: 6px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-}
+    .badge {
+        padding: 6px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+    }
 
-.btn-success {
-  background-color: var(--success) !important;
-  border: 1px solid var(--success) !important;
-  color: #ffffff !important;
-}
+    .btn-success {
+        background-color: var(--success) !important;
+        border: 1px solid var(--success) !important;
+        color: #ffffff !important;
+    }
 
-.btn-success:hover,
-.btn-success:focus,
-.btn-success:active {
-  background-color: #16a34a !important;
-  border-color: #16a34a !important;
-  color: #ffffff !important;
-}
+    .btn-success:hover,
+    .btn-success:focus,
+    .btn-success:active {
+        background-color: #16a34a !important;
+        border-color: #16a34a !important;
+        color: #ffffff !important;
+    }
 
-.btn-danger {
-    background-color: var(--danger);
-    border: none;
-}
+    .btn-danger {
+        background-color: var(--danger);
+        border: none;
+    }
 
-.btn-primary {
-    background-color: var(--primary);
-    border: none;
-}
+    .btn-primary {
+        background-color: var(--primary);
+        border: none;
+    }
 
-body, .card, .navbar, #sidebar {
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-.ai-content {
-    background-color: #f1f0f0;
-    padding: 10px;
-    border-radius: 10px;
-    display: inline-block;
-}
+    body,
+    .card,
+    .navbar,
+    #sidebar {
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
 
-.user-content {
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-    border-radius: 10px;
-    display: inline-block;
-}
+    .ai-content {
+        background-color: #f1f0f0;
+        padding: 10px;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .user-content {
+        background-color: #007bff;
+        color: white;
+        padding: 10px;
+        border-radius: 10px;
+        display: inline-block;
+    }
 </style>
 {% endblock %}
 
@@ -128,58 +132,63 @@ body, .card, .navbar, #sidebar {
 
     <nav id="sidebar" class="p-3 d-flex flex-column vh-100">
         <!--h4 class="text-white mb-4 text-center py-4">Arkvion</h4-->
-        <div class="d-flex align-items-center justify-content-center gap-2 mb-4 py-4">
-            <img src="{{ url_for('static', path='img/logo.svg') }}" 
-                alt="Arkvion Logo" 
-                style="width: 32px; height: 32px;">
-
+        <div class="d-flex align-items-center justify-content-center gap-2 mb-4 py-4"
+            style="transition: all 0.5s ease-in-out;" onclick="window.location.href='/dashboard'">
+            <img src="{{ url_for('static', path='img/logo.svg') }}" alt="Arkvion Logo"
+                style="width: 32px; height: 32px;" >
             <h3 class="text-white mb-0 fw-bold" style="letter-spacing: 0.5px;">Arkvion</h3>
         </div>
 
         <ul class="nav nav-pills flex-column gap-2 flex-grow-1">
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/dashboard' }}" href="/dashboard">
+                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/dashboard' }}"
+                    href="/dashboard">
                     <span class="material-symbols-outlined me-2">dashboard</span>
                     Dashboard
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/income' }}" href="/income">
+                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/income' }}"
+                    href="/income">
                     <span class="material-symbols-outlined me-2">paid</span>
                     Income
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/expenses' }}" href="/expenses">
+                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/expenses' }}"
+                    href="/expenses">
                     <span class="material-symbols-outlined me-2">receipt_long</span>
                     Expenses
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/subscriptions' }}" href="/subscriptions">
+                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/subscriptions' }}"
+                    href="/subscriptions">
                     <span class="material-symbols-outlined me-2">subscriptions</span>
                     Subscriptions
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/budgets' }}" href="/budgets">
+                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/budgets' }}"
+                    href="/budgets">
                     <span class="material-symbols-outlined me-2">wallet</span>
                     Budgets
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/analytics' }}" href="/analytics">
+                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/analytics' }}"
+                    href="/analytics">
                     <span class="material-symbols-outlined me-2">report</span>
                     Reports & Analytics
                 </a>
             </li>
-            
-            
+
+
             <li class="nav-item mt-auto">
                 <a class="nav-link d-flex align-items-center text-danger" href="/logout">
                     <span class="material-symbols-outlined me-2">logout</span>
@@ -197,32 +206,30 @@ body, .card, .navbar, #sidebar {
             </button>
 
             <div class="ms-auto d-flex align-items-center gap-3">
-                <span class="fw-semibold"><h3>{% block page_title %} {% endblock %}</h3></span>
+                <span class="fw-semibold">
+                    <h3>{% block page_title %} {% endblock %}</h3>
+                </span>
             </div>
 
             <div class="ms-auto d-flex align-items-center gap-3">
                 <span class="fw-semibold">Welcome, {{user.username}}</span>
                 <div class="form-check form-switch">
-                    <input 
-                        class="form-check-input" 
-                        type="checkbox" 
-                        id="themeSwitch"
-                    >
+                    <input class="form-check-input" type="checkbox" id="themeSwitch">
                 </div>
             </div>
-            
+
         </nav>
-        
+
         <div class="row">
             <div class="col-12">
                 {% for message in get_flashed_messages(request) %}
-                    <div class="alert alert-{{ message.type }}" role="alert">{{ message.message }}</div>
+                <div class="alert alert-{{ message.type }}" role="alert">{{ message.message }}</div>
                 {% endfor %}
             </div>
         </div>
 
 
-        {% block subpage_content %}                 
+        {% block subpage_content %}
         <p class="text-muted mb-0">{% block page_subtitle %} <!-- default fallback -->{% endblock %}</p>
         {% endblock %}
 
