@@ -466,11 +466,36 @@ option {
     overflow: hidden;
 }
 
+/* FORCE chat box to obey theme */
 #chatBox {
     font-size: 16px;
     line-height: 1.5;
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
+/* message wrapper */
+.chat-row {
+    display: flex;
+    width: 100%;
+}
+
+/* alignment */
+.chat-row.user {
+    justify-content: flex-end;
+}
+
+.chat-row.ai {
+    justify-content: flex-start;
+}
+
+/* bubble */
 .chat-bubble {
     max-width: 75%;
     padding: 10px 14px;
@@ -480,20 +505,18 @@ option {
     word-wrap: break-word;
 }
 
-/* user bubble (right side) */
+/* AI bubble */
+.bot-bubble {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+}
+
+/* USER bubble */
 .user-bubble {
     background: var(--primary);
     color: white;
-    border-bottom-right-radius: 4px;
 }
 
-/* bot bubble (left side) */
-.bot-bubble {
-    background: var(--card);
-    color: var(--text);
-    border: 1px solid var(--border);
-    border-bottom-left-radius: 4px;
-}
 
 img {
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
@@ -501,4 +524,19 @@ img {
 
 img:hover {
     opacity: 1;
+}
+
+#chatBox > div {
+    background: transparent !important;
+    border: none !important;
+}
+
+.ai-content {
+    display: inline-block;
+    background: var(--bg) !important;
+    color: var(--text) !important;
+    padding: 10px 14px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    max-width: 75%;
 }
